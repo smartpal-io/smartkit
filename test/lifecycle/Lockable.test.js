@@ -1,5 +1,5 @@
-import expectThrow from "../../node_modules/zeppelin-solidity/test/helpers/expectThrow";
-import expectEvent from "../../node_modules/zeppelin-solidity/test/helpers/expectEvent";
+import expectThrow from "../../node_modules/openzeppelin-solidity/test/helpers/expectThrow";
+import expectEvent from "../../node_modules/openzeppelin-solidity/test/helpers/expectEvent";
 
 const LockableMock = artifacts.require('Lockable');
 
