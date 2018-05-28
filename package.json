@@ -1,0 +1,34 @@
+{
+  "name": "truffle-init-webpack",
+  "version": "0.0.2",
+  "description": "Frontend example using truffle v3",
+  "scripts": {
+    "lint": "eslint ./",
+    "build": "webpack",
+    "dev": "webpack-dev-server"
+  },
+  "author": "SmartContractCompanion",
+  "license": "MIT",
+  "devDependencies": {
+    "truffle": "^4.0.1",
+    "truffle-contract": "1.1.11",
+    "web3": "0.20.6",
+    "web3-provider-engine": "^13.3.3"
+  },
+  "main": "test.js",
+  "directories": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SmartContractCompanion/smart-academy.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/SmartContractCompanion/smart-academy.git"
+  },
+  "homepage": "https://github.com/SmartContractCompanion/smart-academy.git",
+  "dependencies": {
+    "zeppelin-solidity": "^1.8.0"
+  }
+}
