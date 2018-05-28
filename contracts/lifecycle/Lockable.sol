@@ -1,6 +1,6 @@
-pragma solidity ^0.4.21;
+pragma solidity ^0.4.23;
 
-import "../../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
  * @title Lockable
@@ -18,7 +18,7 @@ contract Lockable is Ownable {
    * @dev Create a new Lockable Contract.
    * @param _datelimit uint256 date limit of the contract (timestamp as seconds since unix epoch)
    */
-  function DayLimit(uint256 _datelimit) public {
+  constructor (uint256 _datelimit) public {
     dateLimit = _datelimit;
   }
 
@@ -37,6 +37,14 @@ contract Lockable is Ownable {
    */
   function isLocked() public view returns(bool){
     return block.timestamp>dateLimit;
+  }
+
+  /**
+   * @dev return current date limit. 
+   * @return date limit
+   */
+  function getDateLimit() public view returns(uint256){
+    return dateLimit;
   }
 
   /**
