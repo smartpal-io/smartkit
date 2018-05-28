@@ -1,6 +1,6 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.24;
 
-import "../../node_modules/zeppelin-solidity/contracts/ownership/Whitelist.sol";
+import "../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.sol";
 
 /**
  * @title Sealable
@@ -22,7 +22,7 @@ contract Sealable is Whitelist {
   /**
    * @notice Create a new Sealable Contract.
    */
-  function Sealable() public {
+  constructor() public {
     addAddressToWhitelist(msg.sender);
   }
 

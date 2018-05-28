@@ -10,10 +10,10 @@
   "author": "SmartContractCompanion",
   "license": "MIT",
   "devDependencies": {
-    "truffle": "^4.0.1",
-    "truffle-contract": "1.1.11",
-    "web3": "0.20.6",
-    "web3-provider-engine": "^13.3.3"
+    "truffle": "^4.1.8",
+    "truffle-contract": "3.0.5",
+    "web3": "1.0.0-beta.34",
+    "web3-provider-engine": "^14.0.5"
   },
   "main": "test.js",
   "directories": {
@@ -21,14 +21,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SmartContractCompanion/smart-academy.git"
+    "url": "git+https://github.com/SmartContractCompanion/smartkit.git"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/SmartContractCompanion/smart-academy.git"
+    "url": "https://github.com/SmartContractCompanion/smartkit.git"
   },
-  "homepage": "https://github.com/SmartContractCompanion/smart-academy.git",
+  "homepage": "https://github.com/SmartContractCompanion/smartkit.git",
   "dependencies": {
-    "zeppelin-solidity": "^1.8.0"
+    "openzeppelin-solidity": "^1.9.0"
   }
 }
