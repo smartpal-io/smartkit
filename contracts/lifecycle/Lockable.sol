@@ -1,6 +1,6 @@
 pragma solidity ^0.4.21;
 
-import "../../node_modules/zeppelin-solidity/contracts/ownership/Whitelist.sol";
+import "../../node_modules/zeppelin-solidity/contracts/ownership/Ownable.sol";
 
 /**
  * @title Lockable
