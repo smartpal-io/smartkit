@@ -54,7 +54,7 @@ contract Lockable is Ownable {
    * @dev Throws if called when the contract is locked.
    */
   modifier onlyUnlock() {
-    require(dateLimit>0 && block.timestamp<=dateLimit);
+    require(dateLimit==0 || block.timestamp<=dateLimit);
     _;
   }
 
