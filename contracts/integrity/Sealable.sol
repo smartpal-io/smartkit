@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.sol";
+import "../../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.sol";
 
 /**
  * @title Sealable
@@ -20,21 +20,21 @@ contract Sealable is Whitelist {
 
 
   /**
-   * @notice Create a new Sealable Contract.
+   * @dev Create a new Sealable Contract.
    */
   constructor() public {
     addAddressToWhitelist(msg.sender);
   }
 
   /**
-   * @notice Register a new delegate authorized to add seal
+   * @dev Register a new delegate authorized to add seal
    */
   function registerDelegate(address delegate) onlyOwner public returns(bool success) {  
 	return addAddressToWhitelist(delegate);
   }
   
   /**
-   * @notice Record a new seal in the registry.
+   * @dev Record a new seal in the registry.
    */
   function recordSeal(bytes32 id, bytes32 sealValue) public onlyWhitelisted {
      require(seals[id].value == bytes32(0x0));
