@@ -14,9 +14,12 @@ contract Lockable is Ownable {
   event LogDateLimitUpdated(uint256 indexed dateLimit);
 
   
+
+  
   /**
    * @dev Create a new Lockable Contract.
    * @param _datelimit uint256 date limit of the contract (timestamp as seconds since unix epoch)
+   * (if dateLimit == 0 the contract is permanent)
    */
   constructor (uint256 _datelimit) public {
     dateLimit = _datelimit;
@@ -51,7 +54,7 @@ contract Lockable is Ownable {
    * @dev Throws if called when the contract is locked.
    */
   modifier onlyUnlock() {
-    require(block.timestamp<=dateLimit);
+    require(dateLimit>0 && block.timestamp<=dateLimit);
     _;
   }
 
