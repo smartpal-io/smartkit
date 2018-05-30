@@ -1,4 +1,4 @@
-pragma solidity ^0.4.17;
+pragma solidity ^0.4.24;
 
 import "../../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.sol";
 
@@ -10,32 +10,36 @@ import "../../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.s
  */
 contract Sealable is Whitelist {
 
-  mapping (bytes32 => bytes32) private seals;
+  struct Seal{
+	bytes32 value;
+  }
 
-  event LogNewSealRecorded(bytes32 indexed id, bytes32 indexed seal);
+  mapping (bytes32 => Seal) private seals;
+
+  event LogNewSealRecorded(bytes32 indexed id, bytes32 indexed sealValue);
 
 
   /**
-   * @notice Create a new Sealable Contract.
+   * @dev Create a new Sealable Contract.
    */
-  function Sealable() public {
+  constructor() public {
     addAddressToWhitelist(msg.sender);
   }
 
   /**
-   * @notice Register a new delegate authorized to add seal
+   * @dev Register a new delegate authorized to add seal
    */
   function registerDelegate(address delegate) onlyOwner public returns(bool success) {  
 	return addAddressToWhitelist(delegate);
   }
   
   /**
-   * @notice Record a new seal in the registry.
+   * @dev Record a new seal in the registry.
    */
-  function recordSeal(bytes32 id, bytes32 seal) public onlyWhitelisted {
-     require(seals[id] == bytes32(0x0));
-     seals[id]=seal;
-     emit LogNewSealRecorded(id,seal);
+  function recordSeal(bytes32 id, bytes32 sealValue) public onlyWhitelisted {
+     require(seals[id].value == bytes32(0x0));
+     seals[id]= Seal({value: sealValue});
+     emit LogNewSealRecorded(id,sealValue);
   }
 
   /**
@@ -44,16 +48,16 @@ contract Sealable is Whitelist {
    * @return the seal
    */
   function getSeal(bytes32 id) public view returns(bytes32) {
-    return seals[id];
+	return seals[id].value;
   }
 
   /**
    * Use this method to verify a seal validity
    * @param id of the seal
-   * @param seal value
+   * @param sealValue value
    */
-  function verifySeal(bytes32 id, bytes32 seal) public view returns(bool) {
-    return seals[id]==seal;
+  function verifySeal(bytes32 id, bytes32 sealValue) public view returns(bool) {
+    return seals[id].value==sealValue;
   }
 
 }

@@ -1,7 +1,7 @@
 {
-  "name": "truffle-init-webpack",
-  "version": "0.0.2",
-  "description": "Frontend example using truffle v3",
+  "name": "Smartkit",
+  "version": "0.0.1",
+  "description": "Collection of reusable and extendable smart contracts",
   "scripts": {
     "lint": "eslint ./",
     "build": "webpack",
@@ -29,13 +29,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SmartContractCompanion/smart-academy.git"
+    "url": "git+https://github.com/SmartContractCompanion/smartkit"
   },
   "keywords": [],
   "bugs": {
-    "url": "https://github.com/SmartContractCompanion/smart-academy.git"
+    "url": "https://github.com/SmartContractCompanion/smartkit"
   },
-  "homepage": "https://github.com/SmartContractCompanion/smart-academy.git",
+  "homepage": "https://github.com/SmartContractCompanion/smartkit",
   "dependencies": {
     "openzeppelin-solidity": "1.9.0"
   }
