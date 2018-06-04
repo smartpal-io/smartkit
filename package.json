@@ -1,5 +1,5 @@
 {
-  "name": "Smartkit",
+  "name": "open-smartkit",
   "version": "0.0.1",
   "description": "Collection of reusable and extendable smart contracts",
   "scripts": {
@@ -10,7 +10,7 @@
   "author": "SmartContractCompanion",
   "license": "MIT",
   "devDependencies": {
-    "truffle": "^4.1.8",
+    "truffle": "^4.1.11",
     "truffle-contract": "3.0.5",
     "web3": "1.0.0-beta.34",
     "web3-provider-engine": "^14.0.5",
