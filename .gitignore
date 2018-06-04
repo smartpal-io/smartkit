@@ -6,8 +6,9 @@ logs
 node_modules
 
 # Generated files
-config/development/contracts.json
-config/development/*.sol.js
-config/test/contracts.json
+config
+config
+config
 build
 dist
+.idea
