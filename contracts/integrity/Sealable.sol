@@ -11,7 +11,7 @@ import "../openzeppelin-solidity/Whitelist.sol";
 contract Sealable is Whitelist {
 
   struct Seal{
-	bytes32 value;
+    bytes32 value;
   }
 
   mapping (bytes32 => Seal) private seals;
@@ -20,42 +20,42 @@ contract Sealable is Whitelist {
 
 
   /**
-   * @dev Create a new Sealable Contract.
-   */
+  * @dev Create a new Sealable Contract.
+  */
   constructor() public {
     addAddressToWhitelist(msg.sender);
   }
 
   /**
-   * @dev Register a new delegate authorized to add seal
-   */
-  function registerDelegate(address delegate) onlyOwner public returns(bool success) {  
-	return addAddressToWhitelist(delegate);
+  * @dev Register a new delegate authorized to add seal
+  */
+  function registerDelegate(address delegate) onlyOwner public returns(bool success) {
+    return addAddressToWhitelist(delegate);
   }
-  
+
   /**
-   * @dev Record a new seal in the registry.
-   */
+  * @dev Record a new seal in the registry.
+  */
   function recordSeal(bytes32 id, bytes32 sealValue) public onlyWhitelisted {
-     require(seals[id].value == bytes32(0x0));
-     seals[id]= Seal({value: sealValue});
-     emit LogNewSealRecorded(id,sealValue);
+    require(seals[id].value == bytes32(0x0));
+    seals[id]= Seal({value: sealValue});
+    emit LogNewSealRecorded(id,sealValue);
   }
 
   /**
-   * Use this getter function to access the seal value
-   * @param id of the seal
-   * @return the seal
-   */
+  * Use this getter function to access the seal value
+  * @param id of the seal
+  * @return the seal
+  */
   function getSeal(bytes32 id) public view returns(bytes32) {
-	return seals[id].value;
+    return seals[id].value;
   }
 
   /**
-   * Use this method to verify a seal validity
-   * @param id of the seal
-   * @param sealValue value
-   */
+  * Use this method to verify a seal validity
+  * @param id of the seal
+  * @param sealValue value
+  */
   function verifySeal(bytes32 id, bytes32 sealValue) public view returns(bool) {
     return seals[id].value==sealValue;
   }
