@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "../../node_modules/openzeppelin-solidity/contracts/ownership/Whitelist.sol";
+import "../openzeppelin-solidity/Whitelist.sol";
 
 /**
  * @title Sealable

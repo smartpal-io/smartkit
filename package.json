@@ -1,6 +1,6 @@
 {
   "name": "open-smartkit",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Collection of reusable and extendable smart contracts",
   "scripts": {
     "lint": "eslint ./",
