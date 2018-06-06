@@ -1,0 +1,2 @@
+- Digitizing, verifying academic credentials
+- Federated repository of academic information specific to class, professor, and student

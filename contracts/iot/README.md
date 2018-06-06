@@ -1,0 +1,2 @@
+- Ability for IoT applications to contribute transactional data to blockchains
+- Implications across industries (trucking/transportation, supply chain integrity, etc.)

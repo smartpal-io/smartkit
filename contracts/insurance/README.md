@@ -1,0 +1,4 @@
+- Improve multi-party contracts
+- Streamline risk contract efficiency
+- Streamline claims adjudication
+- Reduce disputes with transparency of shared data

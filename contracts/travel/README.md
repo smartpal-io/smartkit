@@ -1,0 +1,2 @@
+- Passenger Identification, boarding, passport, payment, and other documentation digitized and verified
+- Loyalty programs digitization and tracking
