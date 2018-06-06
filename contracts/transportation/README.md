@@ -1,0 +1,1 @@
+- Tracking journey stops; paired with IoT to create an immutable ledger of trip data

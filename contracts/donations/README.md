@@ -1,0 +1,2 @@
+- Provide auditable trail for donations to prevent fraud
+- Ensure crowdfunded campaigns receive donations and contributors are compensated

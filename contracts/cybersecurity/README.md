@@ -1,0 +1,3 @@
+- Fight hacking with immutability of ledger
+- Guarantee validity with data integrity
+- No Single Point of Failure (decrease in IP-based DDoS attack success)

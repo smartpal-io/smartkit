@@ -1,0 +1,4 @@
+- Control of ownership rights
+- Anti-piracy / copyright infringement
+- Use of smart contracts for artist compensation/legal proceedings
+- Payments processing -- cryptographic, secure, and anti-3rd party (this opens up content availability internationally)
