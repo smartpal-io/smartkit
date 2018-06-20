@@ -1,2 +1,0 @@
-- Integrity of evidence, resistance to falsification of case data
-- Documentation of time-stamped, chronological chain of facts

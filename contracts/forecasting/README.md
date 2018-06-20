@@ -1,1 +1,0 @@
-- Combined with machine learning algorithms, blockchain can provide a decentralized forecasting tool

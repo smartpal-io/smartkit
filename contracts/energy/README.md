@@ -1,2 +1,0 @@
-- Bypass public grids to allow for cheaper, peer to peer energy transfer
-- Smart utility metering

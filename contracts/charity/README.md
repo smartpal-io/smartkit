@@ -1,2 +1,0 @@
-- Tracking donation allocation, accountability, integrity
-- Reduce overhead and complexity of donation payment processing

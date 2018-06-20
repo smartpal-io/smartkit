@@ -1,1 +1,0 @@
-Smart contracts to determine validity of will and allocation of inheritances

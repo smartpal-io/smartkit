@@ -1,3 +1,0 @@
-- Streamline payments processing with high efficiency, fast and secure transactions
-- Empower global transactions, tearing down national currency borders
-- Minimize auditing complexity for any financial ledger

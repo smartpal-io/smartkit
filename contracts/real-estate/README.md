@@ -1,4 +1,0 @@
-- Transparency within agreements
-- Verify property information, update and decentralize records
-- Reduce paperwork, digitize transactional processes
-- Record, track, transfer land titles

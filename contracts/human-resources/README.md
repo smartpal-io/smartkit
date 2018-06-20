@@ -1,2 +1,0 @@
-- Background checks: Verification of identity, employment history
-- Payment and benefits process validation

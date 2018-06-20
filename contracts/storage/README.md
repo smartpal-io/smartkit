@@ -1,3 +1,0 @@
-- Increased security with a shift from centralized data security to decentralized network
-- Lower transactional costs within a decentralized network
-- Crowdsourcing unused cloud storage

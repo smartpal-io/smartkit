@@ -1,1 +1,0 @@
-- Bypass intermediaries, providing more cost-effective advertising
