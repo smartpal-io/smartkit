@@ -26,6 +26,9 @@ contract RoomBookingService is Whitelist {
         bool initialized; // utility boolean to check the presence of a room in the rooms mapping
     }
 
+    event LogRoomAdded(bytes32  roomId, uint256 capacity);
+
+
     constructor() public{
         addAddressToWhitelist(msg.sender);
     }
@@ -33,11 +36,11 @@ contract RoomBookingService is Whitelist {
     /**
     * @dev Add a room
     */
-    function addRoom(bytes32 _id, uint256 _capacity) public onlyOwner() nonZeroBytes32(_id) nonZeroUint256(_capacity) {
+    function addRoom(bytes32 _roomId, uint256 _capacity) public onlyOwner() nonZeroBytes32(_roomId) nonZeroUint256(_capacity) {
         // check if a room with same id already added
-        require(!rooms[_id].initialized);
-        rooms[_id] = Room({
-            id : _id,
+        require(!rooms[_roomId].initialized);
+        rooms[_roomId] = Room({
+            id : _roomId,
             capacity : _capacity,
             status : Status.FREE,
             bookedBy : address(0x0),
@@ -45,21 +48,31 @@ contract RoomBookingService is Whitelist {
             bookedUntil : 0,
             initialized : true
             });
+        emit LogRoomAdded(_roomId, _capacity);
+    }
+
+    /**
+    * @dev Get room status
+    */
+    function getRoomStatus(bytes32 _roomId) view returns (uint){
+        // check if the room exists
+        require(rooms[_roomId].initialized);
+        return uint(rooms[_roomId].status);
     }
 
     /**
     * @dev Book a room
-    * @param _id the identifier of the room to book
+    * @param _roomId the identifier of the room to book
     * @param _from the timestamp when to start the booking
     * @param _until the timestamp when to start the booking
     * The sender of the message must be whitelisted to book a room
     * The room must be available at this time slot
     */
-    function book(bytes32 _id, uint256 _from, uint256 _until) public onlyWhitelisted() onlyIfGreater(_from, _until) {
+    function book(bytes32 _roomId, uint256 _from, uint256 _until) public onlyWhitelisted() onlyIfGreater(_from, _until) {
         // check if the room exists
-        require(rooms[_id].initialized);
-        checkAvailability(rooms[_id], _from, _until);
-        internalBook(rooms[_id], msg.sender, _from, _until);
+        require(rooms[_roomId].initialized);
+        checkAvailability(rooms[_roomId], _from, _until);
+        internalBook(rooms[_roomId], msg.sender, _from, _until);
     }
 
     /**
@@ -91,7 +104,11 @@ contract RoomBookingService is Whitelist {
     }
 
     function isAvailable(Room room) internal pure returns (bool){
-        return room.status == Status.FREE;
+        if( room.status == Status.FREE || (room.bookedFrom == 0 && room.bookedUntil == 0)){
+            return false;
+        }
+
+        return true;
     }
 
     function internalBook(Room room, address _by, uint256 _from, uint256 _until) internal onlyNotLocked(room.status) {
@@ -129,7 +146,7 @@ contract RoomBookingService is Whitelist {
     * @dev Throws if zero
     */
     modifier nonZeroBytes32(bytes32 value){
-        require(value != bytes32(value));
+        require(value != bytes32(0x00));
         _;
     }
 
@@ -137,7 +154,7 @@ contract RoomBookingService is Whitelist {
     * @dev Throws if zero
     */
     modifier nonZeroUint256(uint256 value){
-        require(value != uint256(value));
+        require(value != uint256(0));
         _;
     }
 }
