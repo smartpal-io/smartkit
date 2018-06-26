@@ -26,9 +26,12 @@ contract RoomBookingService is Whitelist {
         bool initialized; // utility boolean to check the presence of a room in the rooms mapping
     }
 
-    event LogRoomAdded(bytes32  roomId, uint256 capacity);
-    event LogRoomBooked(bytes32  roomId, address by);
-    event LogRoomFreed(bytes32  roomId, address by);
+    // triggered when a room is added
+    event LogRoomAdded(bytes32 roomId, uint256 capacity);
+    // triggered when a room is booked
+    event LogRoomBooked(bytes32 roomId, address by);
+    // triggered when a room is freed
+    event LogRoomFreed(bytes32 roomId, address by);
 
 
     constructor() public{
@@ -37,8 +40,15 @@ contract RoomBookingService is Whitelist {
 
     /**
     * @dev Add a room
+    * @param _roomId the identifier of the room
+    * @param _capacity the capacity of the room
     */
-    function addRoom(bytes32 _roomId, uint256 _capacity) public onlyOwner() nonZeroBytes32(_roomId) nonZeroUint256(_capacity) {
+    function addRoom(bytes32 _roomId, uint256 _capacity)
+        onlyOwner
+        nonZeroBytes32(_roomId)
+        nonZeroUint256(_capacity)
+        public
+    {
         // check if a room with same id already added
         require(!rooms[_roomId].initialized);
         rooms[_roomId] = Room({
@@ -56,10 +66,30 @@ contract RoomBookingService is Whitelist {
     /**
     * @dev Get room status
     */
-    function getRoomStatus(bytes32 _roomId) public view returns (uint){
+    function getRoomStatus(bytes32 _roomId)
+        public
+        view
+        returns (uint)
+    {
         // check if the room exists
         require(rooms[_roomId].initialized);
         return uint(rooms[_roomId].status);
+    }
+
+    /**
+    * @dev Return if the room is available in given interval
+    * @param _roomId the identifier of the room
+    * @param _from the starting timestamp
+    * @param _until the ending timestamp
+    */
+    function isRoomAvailable(bytes32 _roomId, uint256 _from, uint256 _until)
+        public
+        view
+        returns (bool)
+    {
+        // check if the room exists
+        require(rooms[_roomId].initialized);
+        return isAvailableInRange(rooms[_roomId], _from, _until);
     }
 
     /**
@@ -70,7 +100,12 @@ contract RoomBookingService is Whitelist {
     * The sender of the message must be whitelisted to book a room
     * The room must be available at this time slot
     */
-    function book(bytes32 _roomId, uint256 _from, uint256 _until) public onlyWhitelisted() onlyIfGreater(_from, _until) onlyInFuture(_from){
+    function book(bytes32 _roomId, uint256 _from, uint256 _until)
+        onlyWhitelisted
+        onlyIfGreater(_from, _until)
+        onlyInFuture(_from)
+        public
+    {
         // check if the room exists
         require(rooms[_roomId].initialized);
         checkAvailability(_roomId, _from, _until);
@@ -82,7 +117,10 @@ contract RoomBookingService is Whitelist {
     * @dev Free a booked room before the end of the booking
     * Throws if the sender address does not match the bookedBy address
     */
-    function free(bytes32 _roomId) public onlyWhitelisted() {
+    function free(bytes32 _roomId)
+        onlyWhitelisted
+        public
+    {
         // check if the room exists
         require(rooms[_roomId].initialized);
         require(rooms[_roomId].bookedBy == msg.sender);
@@ -96,7 +134,10 @@ contract RoomBookingService is Whitelist {
     * @param _until the timestamp when to start the booking
     * Throws if the room is not available
     */
-    function checkAvailability(bytes32 _roomId, uint256 _from, uint256 _until) internal onlyNotLocked(rooms[_roomId].status) {
+    function checkAvailability(bytes32 _roomId, uint256 _from, uint256 _until)
+        internal
+        onlyNotLocked(rooms[_roomId].status)
+    {
         if (!isAvailableInRange(rooms[_roomId], _from, _until)) {
             // check if booking limit reached
             if (now >= rooms[_roomId].bookedUntil) {
@@ -108,25 +149,35 @@ contract RoomBookingService is Whitelist {
         }
     }
 
-    function isAvailableInRange(Room room, uint256 _from, uint256 _until) internal pure returns (bool){
-        if( room.status == Status.FREE && room.bookedFrom == 0 && room.bookedUntil == 0){
+    function isAvailableInRange(Room room, uint256 _from, uint256 _until)
+        pure
+        internal
+        returns (bool)
+    {
+        if (room.bookedFrom == 0 && room.bookedUntil == 0) {
             return true;
         }
-        else{
+        else {
             return !isOverlap(room.bookedFrom, room.bookedUntil, _from, _until);
         }
     }
 
 
-    function internalBook(bytes32 _roomId, address _by, uint256 _from, uint256 _until) internal onlyNotLocked(rooms[_roomId].status) {
+    function internalBook(bytes32 _roomId, address _by, uint256 _from, uint256 _until)
+        onlyNotLocked(rooms[_roomId].status)
+        internal
+    {
         rooms[_roomId].status = Status.BOOKED;
         rooms[_roomId].bookedFrom = _from;
         rooms[_roomId].bookedUntil = _until;
         rooms[_roomId].bookedBy = _by;
     }
 
-    function internalFree(bytes32 _roomId) internal onlyNotLocked(rooms[_roomId].status) {
-        rooms[_roomId].status = Status.FREE;
+    function internalFree(bytes32 _roomId)
+        onlyNotLocked(rooms[_roomId].status)
+        internal
+    {
+        rooms[_roomId].status = Status.FREE ;
         rooms[_roomId].bookedFrom = 0;
         rooms[_roomId].bookedUntil = 0;
         rooms[_roomId].bookedBy = 0x0;
@@ -136,7 +187,11 @@ contract RoomBookingService is Whitelist {
     /**
     * @dev Check if there is an overlap given two inclusive integer ranges [x1:x2] and [y1:y2], where x1 ≤ x2 and y1 ≤ y2
     */
-    function isOverlap(uint256 x1, uint256 x2, uint256 y1, uint256 y2) internal pure returns(bool){
+    function isOverlap(uint256 x1, uint256 x2, uint256 y1, uint256 y2)
+        internal
+        pure
+        returns (bool)
+    {
         return x1 <= y2 && y1 <= x2;
     }
 

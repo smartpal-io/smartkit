@@ -3,6 +3,7 @@ import expectEvent from "../../node_modules/openzeppelin-solidity/test/helpers/e
 import assertRevert from '../../node_modules/openzeppelin-solidity/test/helpers/assertRevert';
 
 const RoomBookingServiceMock = artifacts.require('RoomBookingService');
+
 const FREE = 0;
 const BOOKED = 1;
 const LOCKED = 2;
@@ -43,15 +44,15 @@ contract('RoomBookingService', function (accounts) {
        assert.equal(FREE, roomStatus);
     });
 
-    it('should get BOOKED status after room booked', async function () {
+    it('room should be available during booking interval', async function () {
        let from = Date.now() + 1 * MINUTES;
        let until = from + 1 * MINUTES;
        await expectEvent.inTransaction(
          mock.book(roomId, from, until, { from: owner }),
          'LogRoomBooked'
         );
-        let roomStatus = await mock.getRoomStatus(roomId);
-        assert.equal(BOOKED, roomStatus);
+        let isRoomAvailable = await mock.isRoomAvailable(roomId, from, until);
+        isRoomAvailable.should.be.equal(false);
     });
 
     it('should get FREE status after room freed', async function () {
