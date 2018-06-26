@@ -3,15 +3,22 @@ import expectEvent from "../../node_modules/openzeppelin-solidity/test/helpers/e
 import assertRevert from '../../node_modules/openzeppelin-solidity/test/helpers/assertRevert';
 
 const RoomBookingServiceMock = artifacts.require('RoomBookingService');
+const FREE = 0;
+const BOOKED = 1;
+const LOCKED = 2;
+
+const SECONDS = 1000;
+const MINUTES = 60 * SECONDS;
 
 require('chai')
   .use(require('chai-as-promised'))
 .should();
 
+
 contract('RoomBookingService', function (accounts) {
-  
+
   let mock;
-  let roomId ='0x01' ;
+  let roomId ='0x0000000000000000000000000000000000000000000000000000000000000001' ;
   let capacity = 1;
   
   const [
@@ -31,9 +38,29 @@ contract('RoomBookingService', function (accounts) {
       );
     });
 
-    it('should add a room and trigger LogRoomAdded event when the owner call addRoom', async function () {
-       var roomStatus = await mock.getRoomStatus(roomId);
-       console.log("room status : ", roomStatus.toNumber());
+    it('should get FREE status after room creation', async function () {
+       let roomStatus = await mock.getRoomStatus(roomId);
+       assert.equal(FREE, roomStatus);
+    });
+
+    it('should get BOOKED status after room booked', async function () {
+       let from = Date.now() + 1 * MINUTES;
+       let until = from + 1 * MINUTES;
+       await expectEvent.inTransaction(
+         mock.book(roomId, from, until, { from: owner }),
+         'LogRoomBooked'
+        );
+        let roomStatus = await mock.getRoomStatus(roomId);
+        assert.equal(BOOKED, roomStatus);
+    });
+
+    it('should get FREE status after room freed', async function () {
+       await expectEvent.inTransaction(
+         mock.free(roomId, { from: owner }),
+         'LogRoomFreed'
+        );
+        let roomStatus = await mock.getRoomStatus(roomId);
+        assert.equal(FREE, roomStatus);
     });
 
     it('should not add a room and revert when anyone call addRoom', async function () {
