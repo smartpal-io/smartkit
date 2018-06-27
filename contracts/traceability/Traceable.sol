@@ -21,9 +21,8 @@ contract Traceable is Whitelist {
     // definition of the Position structure
     struct Position {
         uint256 timestamp;
-        uint256 latitude;
-        uint256 longitude;
-        address sender;
+        int256 latitude;
+        int256 longitude;
     }
 
     event LogRawMaterialAdded(address sender, address rawMaterial);
@@ -31,48 +30,88 @@ contract Traceable is Whitelist {
 
     constructor(bytes32 _id) public{
         id = _id;
-        addAddressToWhitelist(msg.sender);
+    }
+
+    /**
+    * @dev Add an allowed administrator
+    * @param _allowedAdministrator address
+    */
+    function addAllowedModifier(address _allowedAdministrator)
+      public
+      onlyOwner
+      nonEmptyAddress(_allowedAdministrator)
+    {
+        addAddressToWhitelist(_allowedAdministrator);
     }
 
     /**
     * @dev Add a raw material
+    * @param _rawMaterial address
     */
-    function addRawMaterial(address _rawMaterial) public onlyWhitelisted() nonEmptyAddress(_rawMaterial){
+    function addRawMaterial(address _rawMaterial)
+      public
+      onlyWhitelisted()
+      nonEmptyAddress(_rawMaterial)
+    {
         rawMaterials.push(_rawMaterial);
         emit LogRawMaterialAdded(msg.sender, _rawMaterial);
     }
 
     /**
-    * @dev Add a step
+    * @dev Add a historical position
     */
-    function addStep(uint256 _timestamp, uint256 _latitude, uint256 _longitude) public onlyWhitelisted() {
-        // check if a room with same id already added
-
+    function addStep(uint256 _timestamp, int256 _latitude, int256 _longitude)
+      public
+      onlyWhitelisted()
+    {
         historicalPositions.push(Position({
             timestamp : _timestamp,
             latitude : _latitude,
-            longitude : _longitude,
-            sender : msg.sender
+            longitude : _longitude
             })
         );
-
         emit LogNewPositionAdded(msg.sender,_timestamp);
     }
 
+    /**
+    * @dev Get number of historical positions of the product
+    * @return the number of historical position saved for this product
+    */
+    function getStepsCount()
+      public
+      constant
+      returns (uint)
+    {
+        return historicalPositions.length;
+    }
+
+    /**
+    * @dev Get historical position at a specific index
+    * @param _index index of the historical position
+    */
+    function getStep(uint _index)
+      public
+      constant
+      returns (uint256, int256, int256)
+    {
+        require(_index>=0 && _index<historicalPositions.length);
+        Position storage step = historicalPositions[_index];
+        return (step.timestamp, step.latitude, step.longitude);
+    }
 
     /**
     * @dev Throws if zero
     */
-    modifier nonZeroUint256(uint256 value){
-        require(value != uint256(value));
+    modifier nonZeroUint256(uint256 _value){
+        require(_value != uint256(_value));
         _;
     }
 
     /**
     * @dev Throws if empty
     */
-    modifier nonEmptyAddress(address value){
-        require(value != address(0));
+    modifier nonEmptyAddress(address _value){
+        require(_value != address(0));
         _;
     }
 }

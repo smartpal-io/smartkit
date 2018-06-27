@@ -20,6 +20,10 @@ contract('Traceable', function (accounts) {
   before(async function () {
     mock = await TraceableMock.new(1148850588);
     rawMaterial = await TraceableMock.new(2228110111);
+    await expectEvent.inTransaction(
+        mock.addAllowedModifier(owner, { from: owner }),
+        'WhitelistedAddressAdded'
+    );
   });
 
   context('in normal conditions', () => {
