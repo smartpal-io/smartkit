@@ -157,12 +157,12 @@ contract RoomBookingService is Whitelist {
             return true;
         }
         
-        for(uint i = 0; i < rooms[_roomId].numberOfBookings; i++){
-            if(!isOverlap(rooms[_roomId].bookings[i].bookedFrom, rooms[_roomId].bookings[i].bookedUntil, _from, _until)){
-                return true;
+        for(uint i = 0; i < maxRoomBooking; i++){
+            if(isOverlap(rooms[_roomId].bookings[i].bookedFrom, rooms[_roomId].bookings[i].bookedUntil, _from, _until)){
+                return false;
             }
         }
-        return false;
+        return true;
         
     }
     
@@ -174,7 +174,7 @@ contract RoomBookingService is Whitelist {
         if(rooms[_roomId].numberOfBookings == 0){
             return 0;
         }
-        for(uint i = 0; i < rooms[_roomId].numberOfBookings; i++){
+        for(uint i = 0; i < maxRoomBooking; i++){
             if(rooms[_roomId].bookings[i].bookedFrom == 0 && rooms[_roomId].bookings[i].bookedUntil == 0){
                 return i;
             }
