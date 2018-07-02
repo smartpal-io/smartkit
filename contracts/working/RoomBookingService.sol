@@ -95,7 +95,8 @@ contract RoomBookingService is Whitelist {
         onlyIfGreater(_from, _until)
         onlyInFuture(_from)
         public
-    {
+        returns (uint)
+    { 
         // check if the room exists
         require(rooms[_roomId].initialized);
         // check if the room is available at this timeslot
@@ -107,6 +108,7 @@ contract RoomBookingService is Whitelist {
         internalBook(_roomId, availableSlot, msg.sender, _from, _until);
         
         emit LogRoomBooked(_roomId, msg.sender);
+        return availableSlot;
     }
 
     function getNumberOfBookings(bytes32 _roomId )
@@ -121,19 +123,19 @@ contract RoomBookingService is Whitelist {
     }
 
     
-    /*/**
+    /**
     * @dev Free a booked room before the end of the booking
     * Throws if the sender address does not match the bookedBy address
-    function free(bytes32 _roomId)
+    */
+    function free(bytes32 _roomId, uint availableSlot)
         onlyWhitelisted
         public
     {
         // check if the room exists
         require(rooms[_roomId].initialized);
-        require(rooms[_roomId].bookedBy == msg.sender);
-        internalFree(_roomId);
+        internalFree(_roomId, availableSlot);
         emit LogRoomFreed(_roomId, msg.sender);
-    }*/
+    }
     
     
     function hasAvailableSlot(Room room)
@@ -194,13 +196,20 @@ contract RoomBookingService is Whitelist {
         rooms[_roomId].numberOfBookings++;
     }
 
-    /*function internalFree(bytes32 _roomId)
+    function internalFree(bytes32 _roomId, uint slot)
         internal
     {
-        rooms[_roomId].bookedFrom = 0;
-        rooms[_roomId].bookedUntil = 0;
-        rooms[_roomId].bookedBy = 0x0;
-    }*/
+        // only the address of booking can free the room
+        require(rooms[_roomId].bookings[slot].bookedBy == msg.sender);
+        // check if the room was booked to prevent useless storage writing
+        require(rooms[_roomId].bookings[slot].bookedFrom != 0);
+        require(rooms[_roomId].bookings[slot].bookedUntil != 0);
+        rooms[_roomId].bookings[slot].bookedFrom = 0;
+        rooms[_roomId].bookings[slot].bookedUntil = 0;
+        rooms[_roomId].bookings[slot].bookedBy = 0x0;
+        rooms[_roomId].numberOfBookings--;
+        
+    }
 
 
     /**
