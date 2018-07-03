@@ -33,7 +33,7 @@ contract RoomBookingService is Whitelist {
     // triggered when a room is added
     event LogRoomAdded(bytes32 roomId, uint256 capacity);
     // triggered when a room is booked
-    event LogRoomBooked(bytes32 roomId, address by);
+    event LogRoomBooked(bytes32 roomId, address by, uint slot);
     // triggered when a room is freed
     event LogRoomFreed(bytes32 roomId, address by);
     event LogSlotAvailable(bytes32 roomId, uint slot);
@@ -95,7 +95,6 @@ contract RoomBookingService is Whitelist {
         onlyIfGreater(_from, _until)
         onlyInFuture(_from)
         public
-        returns (uint)
     { 
         // check if the room exists
         require(rooms[_roomId].initialized);
@@ -107,8 +106,7 @@ contract RoomBookingService is Whitelist {
         uint availableSlot = getFirstAvailableSlot(_roomId);
         internalBook(_roomId, availableSlot, msg.sender, _from, _until);
         
-        emit LogRoomBooked(_roomId, msg.sender);
-        return availableSlot;
+        emit LogRoomBooked(_roomId, msg.sender, availableSlot);
     }
 
     function getNumberOfBookings(bytes32 _roomId )
