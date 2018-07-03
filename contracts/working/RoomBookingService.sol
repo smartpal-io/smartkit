@@ -36,7 +36,6 @@ contract RoomBookingService is Whitelist {
     event LogRoomBooked(bytes32 roomId, address by, uint slot);
     // triggered when a room is freed
     event LogRoomFreed(bytes32 roomId, address by);
-    event LogSlotAvailable(bytes32 roomId, uint slot);
 
 
     constructor() public{
